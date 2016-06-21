@@ -5,7 +5,7 @@ class MessageFormatter
 {
     // Openning tag is `!
     // Closing is `
-    public $pattern = '/`!(.+?)`/s';
+    public $pattern = '/[[(.+?)]]/s';
 
     public function format($str)
     {
