@@ -10,27 +10,50 @@ class MessageFormatter
     public function format($str)
     {
         if (!preg_match_all($this->pattern, $str, $matches)) {
-            return ['attachment'];
+            return 'NO SPOILERS';
         }
+
+        $payload = ['attachments' => []];
+
+        foreach ($matches[0] as $key => $match) {
+            $offset = strpos($str, $match);
+            $match_len = strlen($match);
+
+            $pretext = $offset != 0 ? substr($str, 0, $offset) : '';
+
+            $payload['attachments'][] = $this->buildAttachment(
+                $pretext,
+                $matches[1][$key]
+            );
+
+            $str = substr($str, $offset + $match_len);
+        }
+
+        if ($str != '') {
+            $payload['attachments'][] = $this->buildAttachment($str);
+        }
+
+        return $payload;
     }
 
     /**
      * Build the attachments for the payload.
      * @param string $pretext
      * @param string $text
+     * @return array
      */
     public function buildAttachment($pretext = '', $text = '')
     {
         $attachment = ['mrkdwn_in' => ['pretext', 'text']];
 
-        if ($pretext !== '' && $pretext !== null) {
-            $attachment['pretext'] = $pretext;
+        if ($pretext !== '' && $pretext !== null && $pretext !== false) {
+            $attachment['pretext'] = trim($pretext);
         }
 
-        if ($text !== '' && $text != null) {
+        if ($text !== '' && $text != null && $pretext !== false) {
             // We add 5 line breaks to trigger collapsing of text
             // in slack.
-            $attachment['text'] = "\n\n\n\n\n" . $text;
+            $attachment['text'] = "\n\n\n\n\n" . trim($text);
         }
 
         return $attachment;
