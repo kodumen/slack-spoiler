@@ -16,6 +16,6 @@ class SpoilerController extends Controller
         $client->request('POST', $request->get('response_url'), ['json' => $message]);
 
         // return response(json_encode($formatter->format($request->get('text'))))->header('content-type', 'application/json');
-        return ''
+        return '';
     }
 }
