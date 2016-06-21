@@ -13,7 +13,10 @@ class MessageFormatter
             return 'NO SPOILERS';
         }
 
-        $payload = ['attachments' => []];
+        $payload = [
+            'response_type' => 'in_channel',
+            'attachments' => []
+        ];
 
         foreach ($matches[0] as $key => $match) {
             $offset = strpos($str, $match);
@@ -44,7 +47,10 @@ class MessageFormatter
      */
     public function buildAttachment($pretext = '', $text = '')
     {
-        $attachment = ['mrkdwn_in' => ['pretext', 'text']];
+        $attachment = [
+            'mrkdwn_in' => ['pretext', 'text'],
+            'color'=> 'danger',
+        ];
 
         if ($pretext !== '' && $pretext !== null && $pretext !== false) {
             $attachment['pretext'] = trim($pretext);
@@ -53,7 +59,7 @@ class MessageFormatter
         if ($text !== '' && $text != null && $pretext !== false) {
             // We add 5 line breaks to trigger collapsing of text
             // in slack.
-            $attachment['text'] = "\n\n\n\n\n" . trim($text);
+            $attachment['text'] = "Spoiler\n\n\n\n\n" . trim($text);
         }
 
         return $attachment;
