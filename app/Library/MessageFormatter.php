@@ -9,14 +9,14 @@ class MessageFormatter
 
     public function format($str)
     {
-        if (!preg_match_all($this->pattern, $str, $matches)) {
-            return 'NO SPOILERS';
-        }
-
         $payload = [
             'response_type' => 'in_channel',
             'attachments' => []
         ];
+
+        if (!preg_match_all($this->pattern, $str, $matches)) {
+            return $payload;
+        }
 
         foreach ($matches[0] as $key => $match) {
             $offset = strpos($str, $match);
