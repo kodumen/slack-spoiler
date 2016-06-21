@@ -10,8 +10,6 @@ class SpoilerController extends Controller
     {
         $formatter = new MessageFormatter;
         
-        return response()->json(
-            $formatter->format($request->get('text'))
-        );
+        return response($formatter->format($request->get('text')));
     }
 }
