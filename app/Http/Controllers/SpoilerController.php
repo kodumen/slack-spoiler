@@ -11,6 +11,7 @@ class SpoilerController extends Controller
     {
         $formatter = new MessageFormatter;
         $message = $formatter->format($request->get('text'));
+        $message['text'] = '*@' . $request->get('user_name') . ' said:*';
 
         $client = new Client();
         $client->request('POST', $request->get('response_url'), ['json' => $message]);
