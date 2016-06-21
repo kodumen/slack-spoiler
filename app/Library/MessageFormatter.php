@@ -59,7 +59,7 @@ class MessageFormatter
         if ($text !== '' && $text != null && $pretext !== false) {
             // We add 5 line breaks to trigger collapsing of text
             // in slack.
-            $attachment['text'] = "Spoiler\n\n\n\n\n" . trim($text);
+            $attachment['text'] = "\n\n\n\n\n" . trim($text);
         }
 
         return $attachment;
